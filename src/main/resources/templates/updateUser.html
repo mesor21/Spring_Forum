@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<header></header>
+<div>
+    <div>
+        <p>User</p>
+        <table>
+            <thead>
+            <th>ID</th>
+            <th>Login</th>
+            <th>Incorporation Date</th>
+            <th>Email</th>
+            <th>Count massage</th>
+            </thead>
+            <tbody>
+            <tr th:each="user: ${user}">
+                <form th:action="'/users/' + ${user.getId}" method="post">
+                    <table style="{width: 100%}">
+                        <tr>
+                            <td th:text=${user.getId}></td>
+                            <td><input th:value="${user.getLogin}" type="text" id="login" name="login" placeholder="login"></td>
+                            <td th:text="${user.getIncorporationDate}"></td>
+                            <td><input th:value="${user.getEmail}" type="text" id="email" name="email" placeholder="123@123.com"></td>
+                            <td th:text="${user.getCountMassage}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <div class="tableFooter">
+                                    <a th:href="@{/users/delete/{id}(id=${user.getId})}">
+                                        <button class="btn1" type="button">Удалить</button>
+                                    </a>
+                                    <a th:href="'/users/' + ${user.getId}">
+                                        <button class="btn1" type="submit">Подтвердить изменения</button>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

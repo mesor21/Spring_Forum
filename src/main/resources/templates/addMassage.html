@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<header></header>
+<div>
+    <div>
+        <p>Massage</p>
+        <table>
+            <thead>
+            <th>Username</th>
+            <th>Massage</th>
+            </thead>
+            <tbody>
+            <tr th:each="massage: ${massage}">
+                <form th:action="'/new'" method="post">
+                    <table style="{width: 100%}">
+                        <tr>
+                            <td><input type="text" id="massage" name="massage" placeholder="massage"></td>
+                            <td>
+                                <select id="id" name="id" >
+                                    <option th:each="user: ${userList}"
+                                            th:value="${user.getId}"
+                                            th:text="${user.getLogin}"/>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <div>
+                                    <a th:href="'/new'">
+                                        <button type="submit">Submit</button>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
