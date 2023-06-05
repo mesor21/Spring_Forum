@@ -37,7 +37,6 @@ public class MassageRepository {
             list = gson.fromJson(bufferedReader, new TypeToken<List<Massage>>() {
             }.getType());
             bufferedReader.close();
-            System.out.println("Lighting objects have been read from " + filePlace + " file.");
             list.sort(idComparator);
             return list;
         } catch (IOException e) {

@@ -37,7 +37,6 @@ public class UserRepository {
             list = gson.fromJson(bufferedReader, new TypeToken<List<User>>() {
             }.getType());
             bufferedReader.close();
-            System.out.println("Lighting objects have been read from " + filePlace + " file.");
             list.sort(idComparator);
             return list;
         } catch (IOException e) {
