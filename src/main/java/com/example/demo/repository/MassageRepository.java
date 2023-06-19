@@ -29,13 +29,14 @@ public class MassageRepository {
     public MassageRepository(Gson gson) {
         this.gson = gson;
     }
+
+    // Загрузка данных из файла
     @Async
     private List<Massage> loadData() {
         var list = new ArrayList<Massage>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filePlace));
-            list = gson.fromJson(bufferedReader, new TypeToken<List<Massage>>() {
-            }.getType());
+            list = gson.fromJson(bufferedReader, new TypeToken<List<Massage>>() {}.getType());
             bufferedReader.close();
             list.sort(idComparator);
             return list;
@@ -45,29 +46,35 @@ public class MassageRepository {
         return null;
     }
 
+    // Запись данных в файл
     @Async
     private void writeData(List<Massage> employee) {
         try {
             FileWriter fileWriter = new FileWriter(filePlace);
             gson.toJson(employee, fileWriter);
             fileWriter.close();
-            System.out.println("Lighting objects have been saved to " + filePlace + " file.");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    // Получение сообщения по идентификатору
     @Async
     public Massage getByID(Long id) {
         List<Massage> massages = loadData();
         var buff = massages.stream().filter(x -> x.getId() == Integer.parseInt(id.toString())).findFirst().get();
         return buff;
     }
+
+    // Удаление сообщения по идентификатору
     @Async
     public void delete(Long myClassId) {
         List<Massage> myClassList = loadData();
         myClassList.removeIf(x -> myClassId - 1 >= 0 && x.getId() == myClassId);
         writeData(myClassList);
     }
+
+    // Сохранение сообщения
     @Async
     public void save(Massage massage) {
         List<Massage> myClassList = loadData();
@@ -79,11 +86,15 @@ public class MassageRepository {
         myClassList.add(massage);
         writeData(myClassList);
     }
+
+    // Получение всех сообщений
     @Async
     public List<Massage> findAll() {
         List<Massage> myClassList = loadData();
         return myClassList;
     }
+
+    // Обновление сообщения
     @Async
     public Massage update(Massage patient) {
         List<Massage> massages = loadData();

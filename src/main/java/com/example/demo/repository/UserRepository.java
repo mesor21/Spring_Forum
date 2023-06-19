@@ -29,13 +29,14 @@ public class UserRepository {
     public UserRepository(Gson gson) {
         this.gson = gson;
     }
+
+    // Загрузка данных из файла
     @Async
     private List<User> loadData() {
         var list = new ArrayList<User>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(filePlace));
-            list = gson.fromJson(bufferedReader, new TypeToken<List<User>>() {
-            }.getType());
+            list = gson.fromJson(bufferedReader, new TypeToken<List<User>>() {}.getType());
             bufferedReader.close();
             list.sort(idComparator);
             return list;
@@ -45,29 +46,36 @@ public class UserRepository {
         return null;
     }
 
+    // Запись данных в файл
     @Async
     private void writeData(List<User> users) {
         try {
             FileWriter fileWriter = new FileWriter(filePlace);
             gson.toJson(users, fileWriter);
             fileWriter.close();
-            System.out.println("Lighting objects have been saved to " + filePlace + " file.");
+            System.out.println("Объекты пользователей были сохранены в файл " + filePlace + ".");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    // Получение пользователя по идентификатору
     @Async
     public User getByID(Long id) {
         List<User> users = loadData();
         var buff = users.stream().filter(x -> x.getId() == Integer.parseInt(id.toString())).findFirst().get();
         return buff;
     }
+
+    // Удаление пользователя по идентификатору
     @Async
     public void delete(Long myClassId) {
         List<User> myClassList = loadData();
         myClassList.removeIf(x -> myClassId - 1 >= 0 && x.getId() == myClassId);
         writeData(myClassList);
     }
+
+    // Сохранение пользователя
     @Async
     public void save(User users) {
         List<User> myClassList = loadData();
@@ -79,11 +87,15 @@ public class UserRepository {
         myClassList.add(users);
         writeData(myClassList);
     }
+
+    // Получение всех пользователей
     @Async
     public List<User> findAll() {
         List<User> myClassList = loadData();
         return myClassList;
     }
+
+    // Обновление пользователя
     @Async
     public User update(User users) {
         List<User> users1 = loadData();

@@ -23,59 +23,78 @@ public class ForumService {
     private MassageRepository massageRepository;
     @Autowired
     private UserRepository userRepository;
+
+    // Получение всех пользователей
     @Async
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    // Получение всех сообщений
     @Async
-    public List<Massage> getAllMassage(){
+    public List<Massage> getAllMassage() {
         return massageRepository.findAll();
     }
+
+    // Удаление сообщения по идентификатору
     @Async
-    public void deleteMassage(String id){
+    public void deleteMassage(String id) {
         massageRepository.delete(Long.valueOf(id));
     }
+
+    // Удаление пользователя по идентификатору
     @Async
-    public void deleteUser(String id){
+    public void deleteUser(String id) {
         userRepository.delete(Long.valueOf(id));
     }
+
+    // Сохранение нового сообщения
     @Async
-    public void saveNewMassage(String userId,String massege){
-        Massage employee = new Massage(Long.parseLong("-1"),Long.parseLong(userId),massege);
+    public void saveNewMassage(String userId, String message) {
+        Massage employee = new Massage(Long.parseLong("-1"), Long.parseLong(userId), message);
         massageRepository.save(employee);
         User user = userRepository.getByID(Long.parseLong(userId));
-        user.setCountMassage(user.getCountMassage()+1);
+        user.setCountMassage(user.getCountMassage() + 1);
         userRepository.update(user);
     }
+
+    // Сохранение нового пользователя
     @Async
-    public void saveNewUser(String login,String email){
+    public void saveNewUser(String login, String email) {
         Date currentDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String incorporationDate = dateFormat.format(currentDate);;
-        User employee = new User(Long.parseLong("-1"),login,incorporationDate,email,0);
+        String incorporationDate = dateFormat.format(currentDate);
+        User employee = new User(Long.parseLong("-1"), login, incorporationDate, email, 0);
         userRepository.save(employee);
     }
+
+    // Получение сообщения по идентификатору
     @Async
-    public Massage getMassageById(String id){
+    public Massage getMassageById(String id) {
         return massageRepository.getByID(Long.valueOf(id));
     }
+
+    // Получение пользователя по идентификатору
     @Async
-    public User getUserById(String id){
+    public User getUserById(String id) {
         return userRepository.getByID(Long.valueOf(id));
     }
+
+    // Обновление пользователя
     @Async
-    public User update(User user){
+    public User update(User user) {
         User user1 = userRepository.getByID(user.getId());
         user.setCountMassage(user1.getCountMassage());
         user.setIncorporationDate(user1.getIncorporationDate());
         return userRepository.update(user);
     }
 
+    // Расчет процентилей
     @Async
     public String calculatePercentile() {
         List<User> sortedUsers = userRepository.findAll();
         String output = "";
-        if(sortedUsers.size()!=0){
+        if (sortedUsers.size() != 0) {
             Collections.sort(sortedUsers, (user1, user2) -> Integer.compare(user1.getCountMassage(), user2.getCountMassage()));
 
             List<Integer> messageCounts = new ArrayList<>();
