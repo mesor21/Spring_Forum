@@ -4,7 +4,6 @@ import com.example.demo.entity.Massage;
 import com.example.demo.entity.User;
 import com.example.demo.service.ForumService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ForumController {
     @Autowired
     private ForumService forumService;
-    private String lastName = " "; //сюда
-    HttpHeaders headers = new HttpHeaders();
-
-    public ForumController(HttpHeaders headers) {
-        this.headers.add("Last_Name", lastName);
-    }
+    private String lastName = "Gavrilova";
 
     // Получение главной страницы
     @Async
@@ -30,6 +24,7 @@ public class ForumController {
     public String getMainPage(Model model) {
         model.addAttribute("list", forumService.getAllMassage());
         model.addAttribute("percentile", forumService.calculatePercentile());
+        model.addAttribute("lastname",lastName);
         return "massageList";
     }
 
@@ -39,6 +34,7 @@ public class ForumController {
     public String getNewMassage(Model model) {
         model.addAttribute("massage", new Massage());
         model.addAttribute("userList", forumService.getAllUsers());
+        model.addAttribute("lastname",lastName);
         return "addMassage";
     }
 
@@ -64,6 +60,7 @@ public class ForumController {
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("list", forumService.getAllUsers());
+        model.addAttribute("lastname",lastName);
         return "userList";
     }
 
@@ -72,6 +69,7 @@ public class ForumController {
     @GetMapping("/users/{id}")
     public String getForEdit(@PathVariable("id") String id, Model model) {
         model.addAttribute("user", forumService.getUserById(id));
+        model.addAttribute("lastname",lastName);
         return "updateUser";
     }
 
@@ -90,6 +88,7 @@ public class ForumController {
     @GetMapping("/users/new")
     public String getNewUser(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("lastname",lastName);
         return "addUser";
     }
 
