@@ -4,6 +4,7 @@ import com.example.demo.entity.Massage;
 import com.example.demo.entity.User;
 import com.example.demo.service.ForumService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ForumController {
     @Autowired
     private ForumService forumService;
+    private String lastName = " "; //сюда
+    HttpHeaders headers = new HttpHeaders();
+
+    public ForumController(HttpHeaders headers) {
+        this.headers.add("Last_Name", lastName);
+    }
 
     // Получение главной страницы
     @Async
