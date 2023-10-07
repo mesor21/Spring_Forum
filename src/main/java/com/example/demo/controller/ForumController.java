@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ForumController {
     @Autowired
     private ForumService forumService;
-    private String lastName = "Gavrilova";
+    private String lastname = "Gavrilova";
 
     // Получение главной страницы
     @Async
@@ -24,7 +24,7 @@ public class ForumController {
     public String getMainPage(Model model) {
         model.addAttribute("list", forumService.getAllMassage());
         model.addAttribute("percentile", forumService.calculatePercentile());
-        model.addAttribute("lastname",lastName);
+        model.addAttribute("lastname", lastname);
         return "massageList";
     }
 
@@ -34,7 +34,7 @@ public class ForumController {
     public String getNewMassage(Model model) {
         model.addAttribute("massage", new Massage());
         model.addAttribute("userList", forumService.getAllUsers());
-        model.addAttribute("lastname",lastName);
+        model.addAttribute("lastname", lastname);
         return "addMassage";
     }
 
@@ -60,7 +60,7 @@ public class ForumController {
     @GetMapping("/users")
     public String getUsers(Model model) {
         model.addAttribute("list", forumService.getAllUsers());
-        model.addAttribute("lastname",lastName);
+        model.addAttribute("lastname", lastname);
         return "userList";
     }
 
@@ -69,7 +69,7 @@ public class ForumController {
     @GetMapping("/users/{id}")
     public String getForEdit(@PathVariable("id") String id, Model model) {
         model.addAttribute("user", forumService.getUserById(id));
-        model.addAttribute("lastname",lastName);
+        model.addAttribute("lastname", lastname);
         return "updateUser";
     }
 
@@ -88,7 +88,7 @@ public class ForumController {
     @GetMapping("/users/new")
     public String getNewUser(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("lastname",lastName);
+        model.addAttribute("lastname", lastname);
         return "addUser";
     }
 
@@ -107,5 +107,10 @@ public class ForumController {
     public String deleteUser(@PathVariable("id") String id) {
         forumService.deleteUser(id);
         return "redirect:/users";
+    }
+    @Async
+    @GetMapping("/about")
+    public String getAbout(){
+        return "about";
     }
 }
